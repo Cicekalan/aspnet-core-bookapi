@@ -41,6 +41,7 @@ Here is a screenshot of the Swagger UI page for the BookAPI:
 
 Example usage:
 
+curl -X GET "localhost:port/api/books/bookId
 ```http
 get /api/books/1
 {
