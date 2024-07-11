@@ -12,7 +12,7 @@ Follow these steps to run the project locally:
    ```bash
    dotnet ef migrations add InitialCreate
    dotnet ef database update
-4. 3. Restore project dependencies: `dotnet restore`
+4. Restore project dependencies: `dotnet restore`
 5. Run the application: `dotnet run`
 
 ## Requirements
