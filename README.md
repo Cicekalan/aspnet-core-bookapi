@@ -37,7 +37,7 @@ You can use the following endpoints to test the API:
 ## Swagger Page
 
 Here is a screenshot of the Swagger UI page for the BookAPI:
-![Home Page](BookApi/screenshots/HomePage.png)
+![Home Page](BookApi/screenshots/BookApiSwaggerPage.png)
 
 Example usage:
 
