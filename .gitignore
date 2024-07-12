@@ -12,6 +12,8 @@ blog/blogapp/data/
 *.mdf
 *.ldf
 *.db
+*.db-shm
+*.db-wal
 
 
 # Ignore build output
