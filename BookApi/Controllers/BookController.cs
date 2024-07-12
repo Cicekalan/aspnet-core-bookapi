@@ -2,11 +2,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BookApi.Dtos;
 using BookApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookApi.Controllers
-{
+{        
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
     [Route("api/books")]
     public class BookController : ControllerBase
@@ -17,8 +19,6 @@ namespace BookApi.Controllers
         {
             _context = context;
         }
-
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetAllBook()
         {
@@ -45,13 +45,26 @@ namespace BookApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-            var book = await _context.Books
-                .Where(b => b.BookId == id)
-                .Include(b => b.BookAuthors!)
-                .ThenInclude(ba => ba.Author)
-                .Include(b => b.Genre)
-                .FirstOrDefaultAsync();
-            return Ok(book!);
+            try
+            {
+                var book = await _context.Books
+                    .Where(b => b.BookId == id)
+                    .Include(b => b.BookAuthors!)
+                        .ThenInclude(ba => ba.Author)
+                    .Include(b => b.Genre)
+                    .FirstOrDefaultAsync();
+
+                if (book == null)
+                {
+                    return NotFound(); 
+                }
+
+                return Ok(book);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
         [HttpPost]
         public async Task<ActionResult> CreateBook([FromBody] BookInsertDto bookInsertDto)

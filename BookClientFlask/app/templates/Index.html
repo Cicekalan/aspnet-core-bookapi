@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flask API Client</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        text-align: center;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+      .container h1 {
+        margin-bottom: 20px;
+      }
+      .container button {
+        margin: 10px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .container button:hover {
+        background-color: #45a049;
+      }
+      .form-container {
+        display: none;
+        margin-top: 20px;
+        text-align: left;
+      }
+      .form-container form {
+        display: flex;
+        flex-direction: column;
+      }
+      .form-container label {
+        margin-bottom: 5px;
+      }
+      .form-container input {
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .form-container button {
+        margin-top: 10px;
+        background-color: #008cba;
+      }
+      #authorsContainer {
+        margin-top: 20px;
+        text-align: left;
+      }
+      #authorsContainer div {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+      #authorsContainer div p {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Flask API Client</h1>
+
+      <button onclick="fetchAuthors()">Get Authors</button>
+      <button onclick="fetchBooks()">Get Books Must be Token</button>
+
+      <button onclick="redirectToCreateUser()">Create User</button>
+      <button onclick="toggleLoginForm()">Login</button>
+
+      <div class="form-container" id="loginForm">
+        <form method="post" onsubmit="login(event)">
+          <label for="userName">userName:</label><br />
+          <input type="text" id="userName" name="userName" required /><br /><br />
+
+          <label for="password">Password:</label><br />
+          <input type="password" id="password" name="password" required /><br /><br />
+
+          <button type="submit">Login</button>
+        </form>
+      </div>
+
+      <div id="authorsContainer"></div>
+      <div id="booksContainer"></div>
+    </div>
+
+    <script>
+      function fetchAuthors() {
+        fetch('/get_authors')
+          .then((response) => response.json())
+          .then((data) => {
+            const authorsContainer = document.getElementById('authorsContainer')
+            if (Array.isArray(data.$values)) {
+              authorsContainer.innerHTML = '<h2>Authors</h2>'
+              data.$values.forEach((author) => {
+                authorsContainer.innerHTML += `
+                                      <div>
+                                          <p><strong>Author Name:</strong> ${author.name}</p>
+                                          <p><strong>Birth Date:</strong> ${author.birthDate}</p>
+                                      </div>
+                                  `
+              })
+            } else {
+              authorsContainer.innerHTML = '<p>Author Not Found!</p>'
+            }
+          })
+          .catch((error) => console.error('Error:', error))
+      }
+      
+      function toggleLoginForm() {
+        const loginForm = document.getElementById('loginForm')
+        loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none'
+      }
+      
+      function login(event) {
+        event.preventDefault()
+        const userName = document.getElementById('userName').value
+        const password = document.getElementById('password').value
+      
+        fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userName, password })
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.reload()
+            } else {
+              throw new Error('Login failed')
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error)
+            alert('Login failed. Please try again.')
+          })
+      }
+      function redirectToCreateUser() {
+        window.location.href = '/create_user'
+      }
+    </script>
+    <script>
+        function fetchBooks() {
+            fetch('/get_books')
+                .then(response => response.json())
+                .then(data => {
+                    const booksContainer = document.getElementById('booksContainer');
+                    if (Array.isArray(data.$values) && data.$values.length > 0) {
+                        booksContainer.innerHTML = '<h2>Books</h2>';
+                        data.$values.forEach(book => {
+                            booksContainer.innerHTML += `
+                                <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                                    <p><strong>Book Title:</strong> ${book.title}</p>
+                                    <p><strong>response:</strong>  ${JSON.stringify(book)}</p>
+                                </div>
+                            `;
+
+                        });
+                    } else {
+                        booksContainer.innerHTML = '<p>No books found!</p>';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    
+    
+  </body>
+</html>

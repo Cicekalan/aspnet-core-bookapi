@@ -1,7 +1,9 @@
 using BookApi.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class BookApiDbContext : DbContext
+public class BookApiDbContext : IdentityDbContext<AppUser>
 {
     public BookApiDbContext(DbContextOptions<BookApiDbContext> options) :
     base(options)

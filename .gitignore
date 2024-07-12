@@ -1,6 +1,8 @@
-  
-# Ignore data directory inside blog/blogapp
-blog/blogapp/data/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 
 # Ignore Visual Studio files and folders
 .vs/
@@ -12,10 +14,42 @@ blog/blogapp/data/
 *.mdf
 *.ldf
 *.db
-*.db-shm
-*.db-wal
+
 
 
 # Ignore build output
 bin/
 obj/
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+
+# Flask specific
+instance/
+.pytest_cache/
+
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
