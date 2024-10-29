@@ -6,7 +6,7 @@ BookAPI is a simple book management API developed with ASP.NET Core.
 
 Follow these steps to run the project locally:
 
-1. Clone the repository: `git clone https://github.com/Aaed517/aspnet-core-bookapi`
+1. Clone the repository: `git clone https://github.com/cicekalan/aspnet-core-bookapi`
 2. Navigate to the project directory: `cd BookApi`
 3. Open a terminal and execute the following commands for database migration:
    ```bash
